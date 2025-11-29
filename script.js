@@ -79,7 +79,7 @@ function setBackground(d) {
   let video = "sunny.mp4";
 
   if (w.includes("rain")) video = night ? " night_rain.mp4" : " rain.mp4";
-  else if (w.includes("snow")|| w.includes("heavy") ||w.includes("slow") ) video = night ? " ssnow.mp4" : "snow.mp4";
+  else if (w.includes("snow")|| w.includes("heavy") ||w.includes("slow") ) video = night ? "ssnow.mp4" : "snow.mp4";
   else if (w.includes("storm") || w.includes("thunder")) video = night ? " night_storm.mp4" : " storm.mp4";
   else if (w.includes("cloud")) video = night ? "night_cloud.mp4" : " cloud.mp4";
   else if (w.includes("fog") || w.includes("mist") || w.includes("haze")) video = night ? "darkcloud.mp4" : " darkcloud.mp4";
