@@ -1,0 +1,105 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weather Forecast – by Sani</title>
+
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+ <script defer src="script.js"></script>
+</head>
+<body>
+ 
+  <!-- Background Video -->
+  <video autoplay muted loop id="bgVideo" src="video/ sunny.mp4"></video>
+ 
+    <!-- Container -->
+  <header>
+    <div class="logo">☀  Weather <span> by Sani</span></div>
+   <!--searching box-->
+    <div class="search-box">
+      <input type="text" id="userLocation" placeholder="Search city" />
+      <button id="searchBtn">
+        <i class="fa fa-search"></i>
+      </button>
+    </div>
+  <!--Recent cities-->
+    <select id="recentCities" class="search-history">
+      <option value="">Recently Searched</option>
+    </select>
+  <!--Temperature option-->
+    <div class="unit-toggle">
+      <label>°C</label>
+      <input type="checkbox" id="unitSwitch">
+      <label>°F</label>
+    </div>
+  </header>
+ <!--                alert message                 -->
+  <div class="error" id="errorBox"></div>
+
+<!--             main city weather display.        -->
+  <section class="main-weather">
+    <div id="weatherIcon"></div>
+    <div class="temp" id="temperature"></div>
+    <div class="feel" id="feelsLike"></div>
+    <div class="desc" id="description"></div>
+    <div class="place-date">
+      <p id="city"></p>
+      <p id="date"></p>
+      
+    </div>
+  </section>
+<!--                 Today weather                  -->
+  <h2 class="heading">Today's Highlights</h2>
+  <section class="highlights">
+
+    <div class="card">
+      <p>Humidity</p><i class="fa-solid fa-water"></i>
+      <h1 id="humidity"></h1></div>
+
+    <div class="card">
+      <p>Wind</p><i class="fa-solid fa-wind"></i>
+      <h1 id="wind"></h1></div>
+
+    <div class="card">
+      <p>Sunrise / Sunset</p><i class="fa-solid fa-sun"></i>
+      <h1><span id="sunrise"></span> 
+      <span id="sunset"></span></h1></div>
+
+    <div class="card">
+      <p>Clouds</p><i class="fa-solid fa-cloud"></i>
+      <h1 id="clouds"></h1></div>
+
+    <div class="card">
+      <p>Pressure</p><i class="fa-solid fa-gauge"></i>
+      <h1 id="pressure"></h1></div>
+
+    <div class="card">
+      <p>AQI</p><i class="fa-solid fa-smog"></i>
+      <h1 id="aqi"></h1></div>
+
+  </section>
+<!--                Hours weather forcast              -->
+  <h2 class="heading">Next 24 Hours</h2>
+  <section class="hourly" id="hourlyContainer"></section>
+<!--           week weather forcast              -->
+  <h2 class="heading">This Week</h2>
+  <section class="weekly" id="weeklyContainer"></section>
+<!--                  weather speaker                        -->
+  <button id="voiceBtn" class="voice-button">
+    <i class="fa-solid fa-microphone">
+
+    </i> Speak Weather</button>
+    <audio id="alertSound" src=" alert.mp3"></audio>
+</body>
+
+</html>
+<!--||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| -->
+<!--||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| -->
+<!--||||||||||||||||||||||||||||||||||||||||       SANI           ||||||||||||||||||||||||||||||||||||||||||||||||||||| -->
+<!--||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| -->
+<!--||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| -->
+  
