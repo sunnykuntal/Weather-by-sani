@@ -1,11 +1,9 @@
   //  API SETTINGS  
-
 const API_KEY = "9179e83a68d0abfed79d96af1d780bde";
 const API_URL = "https://api.openweathermap.org/data/2.5/";
 const AQI_URL = "https://api.openweathermap.org/data/2.5/air_pollution";
 
-//   ELEMENTS  
-
+//  ELEMENTS  
 const searchBtn = document.getElementById("searchBtn");
 const userLocation = document.getElementById("userLocation");
 const tempDisplay = document.getElementById("temperature");
@@ -34,8 +32,7 @@ let isFahrenheit = false;
 let lastWeather = null;
 let lastForecast = null;
 
-//  LIVE DATE & TIME  
-
+// LIVE DATE & TIME 
 function updateDateTime() {
   const now = new Date();
   const date = now.toLocaleDateString("en-IN", {
@@ -54,13 +51,11 @@ function updateDateTime() {
 setInterval(updateDateTime, 1000);
 updateDateTime();
 
-//   TEMPERATURE  CONVERSION 
-
+// TEMP CONVERSION
 const convertTemp = c => isFahrenheit ? (c * 9/5) + 32 : c;
 const unitSymbol = () => isFahrenheit ? "°F" : "°C";
 
-//   ICON SELECTION
-
+// ICON SELECTION
 function getIcon(condition) {
   condition = condition.toLowerCase();
   if (condition.includes("clear")) return "https://img.icons8.com/color/96/sun--v1.png";
@@ -70,42 +65,48 @@ function getIcon(condition) {
   if (condition.includes("snow")) return "https://img.icons8.com/color/96/snow.png";
   return "https://img.icons8.com/color/96/fog-day.png";
 }
-//   BACKGROUND VIDEO  
 
+// BACKGROUND VIDEO 
 function setBackground(d) {
   const now = Math.floor(Date.now() / 1000);
   const night = now > d.sys.sunset || now < d.sys.sunrise;
   const w = d.weather[0].main.toLowerCase();
   let video = "sunny.mp4";
 
-  if (w.includes("rain")) video = night ? " night_rain.mp4" : " rain.mp4";
-  else if (w.includes("snow")|| w.includes("heavy") ||w.includes("slow") ) video = night ? "ssnow.mp4" : " ssnow.mp4";
-  else if (w.includes("storm") || w.includes("thunder")) video = night ? " night_storm.mp4" : " storm.mp4";
-  else if (w.includes("cloud")) video = night ? "night_cloud.mp4" : " cloud.mp4";
-  else if (w.includes("fog") || w.includes("mist") || w.includes("haze")) video = night ? "darkcloud.mp4" : " darkcloud.mp4";
-  else video = night ? " night.mp4" : " sunny.mp4";
+  if (w.includes("rain"))
+    video = night ? "night_rain.mp4" : "rain.mp4";
+
+  else if (w.includes("snow"))
+    video = night ? "night_snow.mp4" : "snow.mp4";
+
+  else if (w.includes("storm") || w.includes("thunder"))
+    video = night ? "night_storm.mp4" : "storm.mp4";
+
+  else if (w.includes("cloud"))
+    video = night ? "night_cloud.mp4" : "cloud.mp4";
+
+  else if (w.includes("fog") || w.includes("mist") || w.includes("haze"))
+    video = night ? "darkcloud.mp4" : "darkcloud.mp4";
+
+  else
+    video = night ? "night.mp4" : "sunny.mp4";
 
   bgVideo.src = `video/${video}`;
 }
 
-//   POPUP  ALERT  
-
+// POPUP ALERT
 function showAlert(text) {
   const div = document.createElement("div");
   div.className = "alert-card";
   div.textContent = text;
   document.body.appendChild(div);
-
   alertSound.currentTime = 0;
   alertSound.play().catch(()=>{});
-
   setTimeout(() => div.remove(), 4000);
 }
 
-//   ENGLISH VOICE 
-
+// ENGLISH VOICE 
 let selectedVoice = null;
-
 function initVoices() {
   const voices = speechSynthesis.getVoices();
   selectedVoice =
@@ -116,7 +117,6 @@ function initVoices() {
 }
 speechSynthesis.addEventListener("voiceschanged", initVoices);
 initVoices();
-
 function speakEnglish(text) {
   const msg = new SpeechSynthesisUtterance(text);
   if (selectedVoice) msg.voice = selectedVoice;
@@ -127,8 +127,7 @@ function speakEnglish(text) {
   speechSynthesis.speak(msg);
 }
 
-//   WEATHER ALERTS 
-
+// WEATHER ALERTS
 function weatherAlerts(d) {
   const w = d.weather[0].main.toLowerCase();
   const t = d.main.temp;
@@ -159,8 +158,7 @@ function weatherAlerts(d) {
   }
 }
 
-//   SEARCH HISTORY LIST 
-
+// SEARCH HISTORY 
 function saveToHistory(name) {
   let hs = JSON.parse(localStorage.getItem("history")) || [];
   if (!hs.includes(name)) {
@@ -177,8 +175,7 @@ function loadHistory() {
 }
 recentCities.onchange = () => recentCities.value && getWeather(recentCities.value);
 
-//   MAIN WEATHER FUNCTION
-
+// MAIN WEATHER FUNCTION 
 async function getWeather(query) {
   if (!query) return showError("Enter city name");
   try {
@@ -196,38 +193,31 @@ async function getWeather(query) {
   }
 }
 
-//  ERROR BOX  
-
+// ERROR BOX 
 function showError(msg) {
   errorBox.style.display = "block";
   errorBox.innerText = msg;
   setTimeout(() => (errorBox.style.display = "none"), 3000);
 }
 
-//   UPDATE WEATHER DISPLAY 
-
+// UPDATE WEATHER UI 
 function updateWeather(d) {
-  const t = d.main.temp;
-  tempDisplay.textContent = `${Math.round(convertTemp(t))}${unitSymbol()}`;
+  tempDisplay.textContent = `${Math.round(convertTemp(d.main.temp))}${unitSymbol()}`;
   feelsLike.textContent = `Feels like: ${Math.round(convertTemp(d.main.feels_like))}${unitSymbol()}`;
   desc.textContent = d.weather[0].description;
   cityEl.textContent = d.name;
-
   humidityEl.textContent = d.main.humidity + "%";
   windEl.textContent = d.wind.speed + " m/s";
   sunriseEl.textContent = new Date(d.sys.sunrise * 1000).toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit",hour12:true});
   sunsetEl.textContent = new Date(d.sys.sunset * 1000).toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit",hour12:true});
   cloudsEl.textContent = d.clouds.all + "%";
   pressureEl.textContent = d.main.pressure + " hPa";
-
   weatherIcon.innerHTML = `<img src="${getIcon(d.weather[0].description)}" width="95">`;
-
   setBackground(d);
   weatherAlerts(d);
 }
 
-//   FORECAST 
-
+// FORECAST 
 async function getForecast(lat, lon) {
   const res = await fetch(`${API_URL}forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`);
   const d = await res.json();
@@ -245,7 +235,10 @@ async function getForecast(lat, lon) {
 
   weeklyContainer.innerHTML = "";
   let days = {};
-  d.list.forEach(f => { const day = f.dt_txt.split(" ")[0]; if (!days[day]) days[day] = f; });
+  d.list.forEach(f => {
+    const day = f.dt_txt.split(" ")[0];
+    if (!days[day]) days[day] = f;
+  });
 
   Object.values(days).slice(0, 7).forEach(f => {
     weeklyContainer.innerHTML += `
@@ -257,16 +250,14 @@ async function getForecast(lat, lon) {
   });
 }
 
-//   AQI  
-
+// AQI 
 async function getAQI(lat, lon) {
   const r = await fetch(`${AQI_URL}?lat=${lat}&lon=${lon}&appid=${API_KEY}`);
   const d = await r.json();
   aqiEl.textContent = d.list[0].main.aqi;
 }
 
-//  VOICE BUTTON  
-
+// VOICE BUTTON 
 voiceBtn.onclick = () => {
   if (!lastWeather) return;
   const d = lastWeather;
@@ -275,15 +266,13 @@ voiceBtn.onclick = () => {
   );
 };
 
-//   UNIT SWITCH 
-
+// UNIT SWITCH 
 unitSwitch.onchange = () => {
   isFahrenheit = unitSwitch.checked;
   if (lastWeather) updateWeather(lastWeather);
 };
 
-//   AUTO SUGGESTION  BOX
-
+// AUTO SUGGESTION 
 const suggestionBox = document.createElement("div");
 suggestionBox.className = "suggestion-box";
 suggestionBox.style.display = "none";
@@ -321,8 +310,7 @@ document.addEventListener("click", e => {
   if (!suggestionBox.contains(e.target) && e.target !== userLocation) hideSuggestions();
 });
 
-//   SEARCH BUTTON   
-
+// SEARCH
 function handleSearch() {
   const city = userLocation.value.trim();
   if (city === "") showError("Enter city name");
@@ -331,8 +319,7 @@ function handleSearch() {
 searchBtn.addEventListener("click", handleSearch);
 userLocation.addEventListener("keypress", (e) => { if (e.key === "Enter") handleSearch(); });
 
-//  AUTO LOCATION  
-
+// AUTO LOCATION 
 window.onload = () => {
   loadHistory();
   if (!navigator.geolocation) return showError("Location not supported");
