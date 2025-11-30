@@ -1,4 +1,4 @@
- //  API SETTINGS  
+//  API SETTINGS  
 const API_KEY = "9179e83a68d0abfed79d96af1d780bde";
 const API_URL = "https://api.openweathermap.org/data/2.5/";
 const AQI_URL = "https://api.openweathermap.org/data/2.5/air_pollution";
@@ -77,6 +77,7 @@ function setBackground(d) {
   const night = now > d.sys.sunset || now < d.sys.sunrise;
   const w = d.weather[0].main.toLowerCase();
   let video = "sunny.mp4";
+   
 
   if (w.includes("rain"))
     video = night ? "night_rain.mp4" : "rain.mp4";
@@ -89,7 +90,7 @@ function setBackground(d) {
   else if (w.includes("fog") || w.includes("mist") || w.includes("haze"))
     video = night ? "darkcloud.mp4" : "darkcloud.mp4";
   else
-    video = night ? "night.mp4" : "sunny.mp4";
+    video = night ? " night.mp4" : "sunny.mp4";
 
   bgVideo.src = `video/${video}`;
 }
