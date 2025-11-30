@@ -1,4 +1,4 @@
-  //  API SETTINGS  
+ //  API SETTINGS  
 const API_KEY = "9179e83a68d0abfed79d96af1d780bde";
 const API_URL = "https://api.openweathermap.org/data/2.5/";
 const AQI_URL = "https://api.openweathermap.org/data/2.5/air_pollution";
@@ -31,6 +31,11 @@ const alertSound = document.getElementById("alertSound");
 let isFahrenheit = false;
 let lastWeather = null;
 let lastForecast = null;
+
+// Allow Sound on First Click (Mobile Support)
+document.body.addEventListener("click", () => {
+  alertSound.muted = false;
+}, { once: true });
 
 // LIVE DATE & TIME 
 function updateDateTime() {
@@ -75,19 +80,14 @@ function setBackground(d) {
 
   if (w.includes("rain"))
     video = night ? "night_rain.mp4" : "rain.mp4";
-
   else if (w.includes("snow"))
     video = night ? "night_snow.mp4" : "snow.mp4";
-
   else if (w.includes("storm") || w.includes("thunder"))
     video = night ? "night_storm.mp4" : "storm.mp4";
-
   else if (w.includes("cloud"))
     video = night ? "night_cloud.mp4" : "cloud.mp4";
-
   else if (w.includes("fog") || w.includes("mist") || w.includes("haze"))
     video = night ? "darkcloud.mp4" : "darkcloud.mp4";
-
   else
     video = night ? "night.mp4" : "sunny.mp4";
 
@@ -105,7 +105,7 @@ function showAlert(text) {
   setTimeout(() => div.remove(), 4000);
 }
 
-// ENGLISH VOICE 
+// VOICE 
 let selectedVoice = null;
 function initVoices() {
   const voices = speechSynthesis.getVoices();
@@ -119,7 +119,7 @@ speechSynthesis.addEventListener("voiceschanged", initVoices);
 initVoices();
 function speakEnglish(text) {
   const msg = new SpeechSynthesisUtterance(text);
-  if (selectedVoice) msg.voice = selectedVoice;
+  msg.voice = selectedVoice;
   msg.lang = "en-US";
   msg.rate = 1.02;
   msg.pitch = 1;
@@ -136,12 +136,10 @@ function weatherAlerts(d) {
     showAlert("Rain detected — carry an umbrella.");
     speakEnglish("Weather update. It is currently raining. Please carry an umbrella.");
   }
-
   else if (w.includes("snow")) {
     showAlert("Snowfall detected — roads may be slippery.");
     speakEnglish("Weather update. Snowfall detected. Stay warm and drive carefully.");
   }
-
   else if (w.includes("storm")) {
     showAlert("Thunderstorm alert — avoid going outside.");
     speakEnglish("Weather alert. A thunderstorm is active in your area. Avoid outdoor travel.");
@@ -158,7 +156,7 @@ function weatherAlerts(d) {
   }
 }
 
-// SEARCH HISTORY 
+// SEARCH HISTORY
 function saveToHistory(name) {
   let hs = JSON.parse(localStorage.getItem("history")) || [];
   if (!hs.includes(name)) {
@@ -175,7 +173,7 @@ function loadHistory() {
 }
 recentCities.onchange = () => recentCities.value && getWeather(recentCities.value);
 
-// MAIN WEATHER FUNCTION 
+// MAIN WEATHER 
 async function getWeather(query) {
   if (!query) return showError("Enter city name");
   try {
@@ -193,14 +191,14 @@ async function getWeather(query) {
   }
 }
 
-// ERROR BOX 
+// ERROR 
 function showError(msg) {
   errorBox.style.display = "block";
   errorBox.innerText = msg;
   setTimeout(() => (errorBox.style.display = "none"), 3000);
 }
 
-// UPDATE WEATHER UI 
+// UPDATE UI 
 function updateWeather(d) {
   tempDisplay.textContent = `${Math.round(convertTemp(d.main.temp))}${unitSymbol()}`;
   feelsLike.textContent = `Feels like: ${Math.round(convertTemp(d.main.feels_like))}${unitSymbol()}`;
