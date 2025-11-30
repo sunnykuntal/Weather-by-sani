@@ -89,7 +89,7 @@ function setBackground(d) {
   else if (w.includes("fog") || w.includes("mist") || w.includes("haze"))
     video = night ? "darkcloud.mp4" : "darkcloud.mp4";
   else
-    video = night ? "night.mp4" : "sunny.mp4";
+    video = night ? " night.mp4" : "sunny.mp4";
 
   bgVideo.src = `video/${video}`;
 }
